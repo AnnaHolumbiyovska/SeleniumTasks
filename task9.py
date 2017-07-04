@@ -2,6 +2,20 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+import time
+
+
+class MyListener(AbstractEventListener):
+    def before_find(self, by, value, driver):
+        print(by, value)
+
+    def after_find(self, by, value, driver):
+        print(by, value)
+
+    def on_exception(self, exception, driver):
+        print(exception)
+        driver.get_screenshot_as_file('img' + str(round(time.time() * 1000)) + '.png')
 
 
 def test_menu():
@@ -9,7 +23,7 @@ def test_menu():
     user_name = "admin"
     user_password = "admin"
 
-    firefox_driver = webdriver.Firefox()
+    firefox_driver = EventFiringWebDriver(webdriver.Firefox(), MyListener())
     firefox_driver.implicitly_wait(2)
     firefox_driver.get(page_addr)
     firefox_driver.find_element_by_name("username").send_keys(user_name)
