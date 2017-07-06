@@ -28,7 +28,6 @@ def test_cart_operations():
         full_page_link.click()
 
         WebDriverWait(firefox_driver, 3).until(ec.title_is("Yellow Duck | Subcategory | Rubber Ducks | My Store"))
-
         # select at least two different items
         if i == 1:
             size = firefox_driver.find_element_by_css_selector('select[class ="form-control"] option[value="Small"]')
@@ -48,12 +47,11 @@ def test_cart_operations():
     # remove items one by one
     item_table = firefox_driver.find_element_by_css_selector('table[class="items table table-striped data-table"]')
     remove_btns = item_table.find_elements_by_css_selector('button[name="remove_cart_item"]')
-    items_count = len(remove_btns)
-    while items_count:
+
+    while len(remove_btns) > 0:
         remove_btns[0].click()
         WebDriverWait(firefox_driver, 3).until(ec.staleness_of(remove_btns[0]))
         remove_btns = firefox_driver.find_elements_by_css_selector('button[name="remove_cart_item"]')
-        items_count -= 1
 
     assert(firefox_driver.find_element_by_xpath("//em").text == "There are no items in your cart.")
     firefox_driver.quit()

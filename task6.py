@@ -3,7 +3,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import os
 
-
 def add_product(w_driver):
     # product parameters
     status_val = True
@@ -116,6 +115,7 @@ def add_product(w_driver):
 
     catalog_form = w_driver.find_element_by_css_selector('form[name="catalog_form"]')
     added_product = catalog_form.find_element_by_link_text(name_val)
+    assert added_product
 
 
 def test_add_new_item():

@@ -32,6 +32,12 @@ def test_links():
         WebDriverWait(firefox_driver, 5).until(ec.new_window_is_opened(opened_windows))
         count_of_opened_windows += 1
         assert (len(firefox_driver.window_handles) == count_of_opened_windows)
+        # switch to just opened window
+        firefox_driver.switch_to.window(firefox_driver.window_handles[count_of_opened_windows - 1])
+        firefox_driver.close()
+        count_of_opened_windows -= 1
+        assert (len(firefox_driver.window_handles) == count_of_opened_windows)
+
         firefox_driver.switch_to.window(main_window)
 
     firefox_driver.quit()
